@@ -1,0 +1,46 @@
+name: Deploy Laravel App to cPanel via FTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ftp-deploy:
+    name: FTP Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 📦 Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.1'
+
+      - name: 🧪 Install Composer Dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: 🚀 FTP Deploy to cPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: 62.72.1.215
+          username: root
+          password: E0xys@1Ts0lut10n
+          protocol: sftp
+          port: 22
+          local-dir: ./
+          server-dir: /var/www/sample00
+          exclude: |
+            .git*
+            .github*
+            node_modules*
+            tests*
+            README.md
+            storage/logs/*
+            bootstrap/cache/*
