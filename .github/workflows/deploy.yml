@@ -34,7 +34,7 @@ jobs:
           username: root
           password: E0xys@1Ts0lut10n
           protocol: ftp
-          port: 22
+          port: 21
           local-dir: ./
           server-dir: /var/www/sample00/
           exclude: |
